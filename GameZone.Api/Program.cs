@@ -1,15 +1,22 @@
+using GameZone.Api.Data;
+using GameZone.Api.Interfaces;
+using GameZone.Api.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Register controllers (our API endpoints live in the Controllers folder)
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 builder.Services.AddControllers();
 
-// Swagger: generates API documentation and a test page
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Show Swagger only while developing
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
