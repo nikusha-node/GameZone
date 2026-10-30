@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
+using GameZone.Api.Enum;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace GameZone.Api.Models;
 
@@ -15,7 +16,7 @@ public class Order
     [Precision(18, 2)]
     public decimal TotalAmount { get; set; }
 
-   
+
     [Required, MaxLength(150)]
     public string ShippingFullName { get; set; } = string.Empty;
 
@@ -38,7 +39,7 @@ public class Order
     public DateTime? UpdatedAtUtc { get; set; }
 
     public string UserId { get; set; } = string.Empty;
-    public ApplicationUser User { get; set; } = null!;
+    public User User { get; set; } = null!;
 
-    public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
+    public List<OrderItem> Items { get; set; } = new List<OrderItem>();
 }

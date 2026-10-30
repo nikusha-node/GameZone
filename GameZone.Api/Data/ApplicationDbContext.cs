@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameZone.Api.Data;
+
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -15,7 +16,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Product> Products => Set<Product>();
     public DbSet<ProductImage> ProductImages => Set<ProductImage>();
     public DbSet<ProductSpecification> ProductSpecifications => Set<ProductSpecification>();
-    public DbSet<Platform> Platforms => Set<Platform>();
     public DbSet<Game> Games => Set<Game>();
     public DbSet<Cart> Carts => Set<Cart>();
     public DbSet<CartItem> CartItems => Set<CartItem>();
@@ -27,11 +27,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(builder); 
+        base.OnModelCreating(builder);
 
         builder.Entity<Category>().HasIndex(c => c.Slug).IsUnique();
         builder.Entity<Brand>().HasIndex(b => b.Slug).IsUnique();
-        builder.Entity<Platform>().HasIndex(p => p.Slug).IsUnique();
         builder.Entity<Product>().HasIndex(p => p.Slug).IsUnique();
         builder.Entity<Product>().HasIndex(p => p.Sku).IsUnique();
         builder.Entity<Order>().HasIndex(o => o.OrderNumber).IsUnique();

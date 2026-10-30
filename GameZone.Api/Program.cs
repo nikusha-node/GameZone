@@ -1,7 +1,6 @@
-using System.Security.Claims;
-using System.Text;
 using GameZone.Api.Configurations;
 using GameZone.Api.Data;
+using GameZone.Api.Helpers;
 using GameZone.Api.Interfaces;
 using GameZone.Api.Middleware;
 using GameZone.Api.Models;
@@ -10,16 +9,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using GameZone.Api.Helpers;
+using System.Security.Claims;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IPasswordHasher<ApplicationUser>, BCryptPasswordHasher>();
+builder.Services.AddScoped<IPasswordHasher<User>, BCryptPasswordHasher>();
 
 builder.Services
-    .AddIdentityCore<ApplicationUser>(options =>
+    .AddIdentityCore<User>(options =>
     {
         options.Password.RequiredLength = 8;
         options.Password.RequireDigit = true;
@@ -102,8 +102,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); 
-app.UseAuthorization();  
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

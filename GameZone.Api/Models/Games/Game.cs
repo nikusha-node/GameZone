@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace GameZone.Api.Models;
+
 public class Game
 {
     public int Id { get; set; }
@@ -17,13 +18,11 @@ public class Game
     public DateOnly? ReleaseDate { get; set; }
 
     [MaxLength(20)]
-    public string? AgeRating { get; set; } 
+    public string? AgeRating { get; set; }
 
     public bool IsDigital { get; set; }
 
     public int ProductId { get; set; }
     public Product Product { get; set; } = null!;
-
-    public int PlatformId { get; set; }
-    public Platform Platform { get; set; } = null!;
+    public List<string> Pictures { get; set; } = new List<string>();
 }

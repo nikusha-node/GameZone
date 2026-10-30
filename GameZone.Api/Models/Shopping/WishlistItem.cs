@@ -7,7 +7,7 @@ public class WishlistItem
     public DateTime AddedAtUtc { get; set; } = DateTime.UtcNow;
 
     public string UserId { get; set; } = string.Empty;
-    public ApplicationUser User { get; set; } = null!;
+    public User User { get; set; } = null!;
 
     public int ProductId { get; set; }
     public Product Product { get; set; } = null!;

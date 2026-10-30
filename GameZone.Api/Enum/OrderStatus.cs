@@ -1,4 +1,4 @@
-namespace GameZone.Api.Models;
+namespace GameZone.Api.Enum;
 
 public enum OrderStatus
 {
