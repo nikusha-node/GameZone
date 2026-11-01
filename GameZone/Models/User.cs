@@ -14,5 +14,6 @@ namespace GameZone.Models
         public string? Code { get; set; }
         public Cart? Cart { get; set; }
         public List<Order> Orders { get; set; } = new List<Order>();
+        public List<Review> Reviews { get; set; } = new List<Review>();
     }
 }

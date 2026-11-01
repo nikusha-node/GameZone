@@ -12,5 +12,7 @@ namespace GameZone.Models
         public required Brand Brand { get; set; }
         public int BrandId { get; set; }
         public Category Category { get; set; }
+        public List<Review> Reviews { get; set; } = new List<Review>();
+        public Game? Game { get; set; }
     }
 }
