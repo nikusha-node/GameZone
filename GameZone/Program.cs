@@ -3,17 +3,27 @@ using GameZone.DependencyInjection.Interfaces;
 using GameZone.DependencyInjection.JWT;
 using GameZone.DependencyInjection.Services;
 using GameZone.Mappings;
+using FluentValidation;
+using GameZone.Validators;
+using GameZone.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddScoped<ValidationFilter>();
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ValidationFilter>();
+});
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddAutoMapper(cfg => { }, typeof(UserMapper));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
