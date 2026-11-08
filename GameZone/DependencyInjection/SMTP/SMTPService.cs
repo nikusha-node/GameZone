@@ -1,8 +1,8 @@
 ﻿
+using GameZone.Models;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
-using GameZone.Models;
 
 namespace GameZone.DependencyInjection.SMTP
 {
@@ -20,8 +20,11 @@ namespace GameZone.DependencyInjection.SMTP
 
         public static async Task<string> SendEmail(User user)
         {
-            string senderEmail = _configuration["Smtp:SenderEmail"]!;
-            string appPassword = _configuration["Smtp:AppPassword"]!;
+            //string senderEmail = _configuration["nika59863@gmail.com"]!;
+            //string appPassword = _configuration["zgsi iouh ulfy wjcb"]!;
+
+            string senderEmail = "nika59863@gmail.com";
+            string appPassword = "zgsi iouh ulfy wjcb";
 
             string code = GenerateCode();
             user.Code = code;

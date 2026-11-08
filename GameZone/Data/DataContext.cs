@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using GameZone.Models;
+﻿using GameZone.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameZone.Data
 {
