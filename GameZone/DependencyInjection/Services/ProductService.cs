@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using GameZone.Data;
-using GameZone.Models;
-using GameZone.DTOs.Product;
+﻿using GameZone.Data;
 using GameZone.DependencyInjection.Interfaces;
+using GameZone.DTOs.Product;
+using GameZone.Exceptions;
+using GameZone.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameZone.DependencyInjection.Services
 {
@@ -21,7 +22,7 @@ namespace GameZone.DependencyInjection.Services
                 .FirstOrDefaultAsync(b => b.Id == request.BrandId);
 
             if (brand == null)
-                throw new Exception("Brand not found.");
+                throw new NotFoundException("Brand not found.");
 
             var product = new Product
             {
@@ -74,7 +75,7 @@ namespace GameZone.DependencyInjection.Services
                 .FirstOrDefaultAsync(b => b.Id == request.BrandId);
 
             if (brand == null)
-                throw new Exception("Brand not found.");
+                throw new NotFoundException("Brand not found.");
 
             product.Name = request.Name;
             product.Description = request.Description;

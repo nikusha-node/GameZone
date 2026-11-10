@@ -3,6 +3,7 @@ using GameZone.Data;
 using GameZone.Models;
 using GameZone.DTOs.Brand;
 using GameZone.DependencyInjection.Interfaces;
+using GameZone.Exceptions;
 
 namespace GameZone.DependencyInjection.Services
 {
@@ -21,7 +22,7 @@ namespace GameZone.DependencyInjection.Services
                 .AnyAsync(b => b.Name == request.Name || b.Slug == request.Slug);
 
             if (brandExists)
-                throw new Exception("Brand name or slug already exists.");
+                throw new ConflictException("A brand with this name or slug already exists.");
 
             var brand = new Brand
             {
@@ -72,7 +73,7 @@ namespace GameZone.DependencyInjection.Services
                     (b.Name == request.Name || b.Slug == request.Slug));
 
             if (duplicateExists)
-                throw new Exception("Brand name or slug already exists.");
+                throw new ConflictException("A brand with this name or slug already exists.");
 
             brand.Name = request.Name;
             brand.Slug = request.Slug;
@@ -94,7 +95,7 @@ namespace GameZone.DependencyInjection.Services
                 return false;
 
             if (await _context.Products.AnyAsync(p => p.BrandId == id))
-                throw new Exception("Cannot delete a brand that has products.");
+                throw new ConflictException("Cannot delete a brand that has products.");
 
             _context.Brands.Remove(brand);
             await _context.SaveChangesAsync();
