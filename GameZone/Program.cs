@@ -29,6 +29,8 @@ builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IPlatformService, PlatformService>();
 
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
