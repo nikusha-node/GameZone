@@ -23,6 +23,23 @@ namespace GameZone.Controllers
             return Ok(products);
         }
 
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetFiltered(
+    [FromQuery] ProductQueryParameters parameters)
+        {
+            if (parameters.MinPrice < 0 || parameters.MaxPrice < 0)
+                return BadRequest("Prices cannot be negative.");
+
+            if (parameters.MinPrice.HasValue &&
+                parameters.MaxPrice.HasValue &&
+                parameters.MinPrice > parameters.MaxPrice)
+                return BadRequest("Minimum price cannot exceed maximum price.");
+
+            var products = await _productService.GetFiltered(parameters);
+
+            return Ok(products);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

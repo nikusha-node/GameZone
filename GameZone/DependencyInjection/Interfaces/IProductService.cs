@@ -8,6 +8,8 @@ namespace GameZone.DependencyInjection.Interfaces
 
         Task<List<ProductResponse>> GetAll();
 
+        Task<ProductListResponse> GetFiltered(ProductQueryParameters parameters);
+
         Task<ProductResponse?> GetById(int id);
 
         Task<bool> Update(int id, UpdateProductRequest request);

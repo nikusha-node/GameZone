@@ -9,5 +9,6 @@ namespace GameZone.DependencyInjection.Interfaces
         Task<OrderResponse?> GetOrderById(int userId, int orderId);
         Task<List<OrderResponse>> GetAllOrders();
         Task<bool> UpdateOrderStatus(int orderId, GameZone.Enums.OrderStatus status);
+        Task<OrderResponse?> GetOrderById(int orderId);
     }
 }

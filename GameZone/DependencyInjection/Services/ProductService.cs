@@ -51,6 +51,72 @@ namespace GameZone.DependencyInjection.Services
             return products.Select(MapToResponse).ToList();
         }
 
+        public async Task<ProductListResponse> GetFiltered(ProductQueryParameters parameters)
+        {
+            var query = _context.Products
+                .Include(p => p.Brand)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(parameters.Search))
+            {
+                query = query.Where(p =>
+                    p.Name.Contains(parameters.Search));
+            }
+
+            if (parameters.BrandId.HasValue)
+            {
+                query = query.Where(p =>
+                    p.BrandId == parameters.BrandId.Value);
+            }
+
+            if (parameters.Category.HasValue)
+            {
+                query = query.Where(p =>
+                    p.Category == parameters.Category.Value);
+            }
+
+            if (parameters.MinPrice.HasValue)
+            {
+                query = query.Where(p =>
+                    p.Price >= parameters.MinPrice.Value);
+            }
+
+            if (parameters.MaxPrice.HasValue)
+            {
+                query = query.Where(p =>
+                    p.Price <= parameters.MaxPrice.Value);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            query = parameters.SortBy.ToLower() switch
+            {
+                "price_asc" => query.OrderBy(p => p.Price),
+                "price_desc" => query.OrderByDescending(p => p.Price),
+                "oldest" => query.OrderBy(p => p.CreatedAt),
+                "name_asc" => query.OrderBy(p => p.Name),
+                "name_desc" => query.OrderByDescending(p => p.Name),
+                _ => query.OrderByDescending(p => p.CreatedAt)
+            };
+
+            var page = Math.Max(1, parameters.Page);
+            var pageSize = Math.Clamp(parameters.PageSize, 1, 50);
+
+            var products = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new ProductListResponse
+            {
+                Products = products.Select(MapToResponse).ToList(),
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+            };
+        }
+
         public async Task<ProductResponse?> GetById(int id)
         {
             var product = await _context.Products

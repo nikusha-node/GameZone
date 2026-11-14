@@ -100,6 +100,16 @@ namespace GameZone.DependencyInjection.Services
             return order == null ? null : MapToResponse(order);
         }
 
+        public async Task<OrderResponse?> GetOrderById(int orderId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                    .ThenInclude(i => i.Product)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            return order == null ? null : MapToResponse(order);
+        }
+
         public async Task<List<OrderResponse>> GetAllOrders()
         {
             var orders = await _context.Orders

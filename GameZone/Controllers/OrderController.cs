@@ -65,6 +65,18 @@ namespace GameZone.Controllers
             return Ok(orders);
         }
 
+        [HttpGet("admin/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetOrderDetails(int id)
+        {
+            var order = await _orderService.GetOrderById(id);
+
+            if (order == null)
+                return NotFound(new { Message = "Order not found." });
+
+            return Ok(order);
+        }
+
         [HttpPut("{id}/status")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateOrderStatus(
