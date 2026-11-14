@@ -1,13 +1,14 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-
 using GameZone.Data;
 using GameZone.Models;
 using GameZone.Enums;
 using GameZone.DTOs.Auth;
+using GameZone.DTOs.User;
 using GameZone.DependencyInjection.Interfaces;
 using GameZone.DependencyInjection.JWT;
 using GameZone.DependencyInjection.SMTP;
+using GameZone.Exceptions;
 
 namespace GameZone.DependencyInjection.Services
 {
@@ -52,7 +53,6 @@ namespace GameZone.DependencyInjection.Services
             return true;
         }
 
-        // VERIFY EMAIL
         public async Task<UserToken?> Verify(string email, string code)
         {
             var user = await _context.Users
@@ -71,7 +71,6 @@ namespace GameZone.DependencyInjection.Services
             return _jwt.GetUserToken(user);
         }
 
-        // LOGIN
         public async Task<UserToken?> Login(string email, string password)
         {
             var user = await _context.Users
@@ -90,6 +89,93 @@ namespace GameZone.DependencyInjection.Services
                 return null;
 
             return _jwt.GetUserToken(user);
+        }
+
+        public async Task<UserProfileResponse> GetProfile(int userId)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new NotFoundException("User not found.");
+
+            return new UserProfileResponse
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role.ToString(),
+                IsVerified = user.IsVerified
+            };
+        }
+
+
+        public async Task<bool> ChangePassword(
+            int userId,
+            ChangePasswordRequest request)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new NotFoundException("User not found.");
+
+            bool currentPasswordIsValid =
+                BCrypt.Net.BCrypt.Verify(
+                    request.CurrentPassword,
+                    user.PasswordHash);
+
+            if (!currentPasswordIsValid)
+                throw new BadRequestException(
+                    "Current password is incorrect.");
+
+            if (request.NewPassword == request.CurrentPassword)
+                throw new BadRequestException(
+                    "New password must be different from current password.");
+
+            user.PasswordHash =
+                BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+
+        public async Task<UserProfileResponse> UpdateProfile(
+            int userId,
+            UpdateProfileRequest request)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new NotFoundException("User not found.");
+
+            if (string.IsNullOrWhiteSpace(request.FirstName))
+                throw new BadRequestException("First name is required.");
+
+            if (string.IsNullOrWhiteSpace(request.LastName))
+                throw new BadRequestException("Last name is required.");
+
+            user.FirstName = request.FirstName.Trim();
+            user.LastName = request.LastName.Trim();
+            user.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return new UserProfileResponse
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Role = user.Role.ToString(),
+                IsVerified = user.IsVerified
+            };
         }
     }
 }

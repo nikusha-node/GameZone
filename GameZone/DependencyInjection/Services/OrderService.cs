@@ -75,16 +75,21 @@ namespace GameZone.DependencyInjection.Services
             };
         }
 
-        public async Task<List<OrderResponse>> GetUserOrders(int userId)
+        public async Task<OrderListResponse> GetUserOrders(
+     int userId,
+     OrderQueryParameters parameters)
         {
-            var orders = await _context.Orders
-                .Include(o => o.OrderItems)
-                .ThenInclude(i => i.Product)
+            var query = _context.Orders
                 .Where(o => o.UserId == userId)
-                .OrderByDescending(o => o.OrderDate)
-                .ToListAsync();
+                .AsQueryable();
 
-            return orders.Select(MapToResponse).ToList();
+            if (parameters.Status.HasValue)
+            {
+                query = query.Where(o =>
+                    o.OrderStatus == parameters.Status.Value);
+            }
+
+            return await GetPaginatedOrders(query, parameters);
         }
 
         public async Task<OrderResponse?> GetOrderById(
@@ -110,15 +115,18 @@ namespace GameZone.DependencyInjection.Services
             return order == null ? null : MapToResponse(order);
         }
 
-        public async Task<List<OrderResponse>> GetAllOrders()
+        public async Task<OrderListResponse> GetAllOrders(
+            OrderQueryParameters parameters)
         {
-            var orders = await _context.Orders
-                .Include(o => o.OrderItems)
-                .ThenInclude(i => i.Product)
-                .OrderByDescending(o => o.OrderDate)
-                .ToListAsync();
+            var query = _context.Orders.AsQueryable();
 
-            return orders.Select(MapToResponse).ToList();
+            if (parameters.Status.HasValue)
+            {
+                query = query.Where(o =>
+                    o.OrderStatus == parameters.Status.Value);
+            }
+
+            return await GetPaginatedOrders(query, parameters);
         }
 
         public async Task<bool> UpdateOrderStatus(
@@ -139,6 +147,35 @@ namespace GameZone.DependencyInjection.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        private async Task<OrderListResponse> GetPaginatedOrders(
+    IQueryable<Order> query,
+    OrderQueryParameters parameters)
+        {
+            var totalCount = await query.CountAsync();
+
+            var page = Math.Max(1, parameters.Page);
+            var pageSize = Math.Clamp(parameters.PageSize, 1, 50);
+
+            var orders = await query
+                .Include(o => o.OrderItems)
+                    .ThenInclude(i => i.Product)
+                .OrderByDescending(o => o.OrderDate)
+                .ThenByDescending(o => o.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new OrderListResponse
+            {
+                Orders = orders.Select(MapToResponse).ToList(),
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(
+                    totalCount / (double)pageSize)
+            };
         }
 
         private static OrderResponse MapToResponse(Order order)

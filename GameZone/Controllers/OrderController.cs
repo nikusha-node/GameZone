@@ -1,5 +1,6 @@
 ﻿
 using GameZone.DependencyInjection.Interfaces;
+using GameZone.DTOs.Order;
 using GameZone.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,9 +40,12 @@ namespace GameZone.Controllers
 
         [HttpGet("my-orders")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetMyOrders()
+        public async Task<IActionResult> GetMyOrders(
+        [FromQuery] OrderQueryParameters parameters)
         {
-            var orders = await _orderService.GetUserOrders(GetUserId());
+            var orders = await _orderService.GetUserOrders(
+                GetUserId(), parameters);
+
             return Ok(orders);
         }
 
@@ -56,12 +60,13 @@ namespace GameZone.Controllers
 
             return Ok(order);
         }
-
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetAllOrders(
+            [FromQuery] OrderQueryParameters parameters)
         {
-            var orders = await _orderService.GetAllOrders();
+            var orders = await _orderService.GetAllOrders(parameters);
+
             return Ok(orders);
         }
 
