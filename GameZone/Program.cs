@@ -1,6 +1,7 @@
 using GameZone.Data;
 using GameZone.DependencyInjection.Interfaces;
 using GameZone.DependencyInjection.JWT;
+using Microsoft.EntityFrameworkCore;
 using GameZone.DependencyInjection.Services;
 using GameZone.Mappings;
 using FluentValidation;
@@ -42,7 +43,7 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IPlatformService, PlatformService>();
 builder.Services.AddScoped<IWishlistService, WishlistService>();
-
+builder.Services.AddScoped<IGenreService, GenreService>();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
@@ -76,7 +77,19 @@ builder.Services.AddSwaggerGen(options =>
         });
 });
 
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider
+            .GetRequiredService<DataContext>();
+
+        await ProductSeeder.SeedAsync(context);
+    }
+}
 
 app.UseMiddleware<ExceptionMiddleware>();
 

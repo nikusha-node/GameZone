@@ -22,6 +22,21 @@ namespace GameZone.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("GameGenre", b =>
+                {
+                    b.Property<int>("GamesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenresId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GamesId", "GenresId");
+
+                    b.HasIndex("GenresId");
+
+                    b.ToTable("GameGenre");
+                });
+
             modelBuilder.Entity("GamePlatform", b =>
                 {
                     b.Property<int>("GamesId")
@@ -137,6 +152,9 @@ namespace GameZone.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AgeRating")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -170,6 +188,29 @@ namespace GameZone.Migrations
                         .IsUnique();
 
                     b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("GameZone.Models.Genre", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("GameZone.Models.Order", b =>
@@ -290,9 +331,15 @@ namespace GameZone.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsOnSale")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("OriginalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -448,6 +495,55 @@ namespace GameZone.Migrations
                     b.ToTable("WishlistItems");
                 });
 
+            modelBuilder.Entity("ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImage");
+                });
+
+            modelBuilder.Entity("GameGenre", b =>
+                {
+                    b.HasOne("GameZone.Models.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GameZone.Models.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("GamePlatform", b =>
                 {
                     b.HasOne("GameZone.Models.Game", null)
@@ -594,6 +690,17 @@ namespace GameZone.Migrations
                     b.Navigation("Wishlist");
                 });
 
+            modelBuilder.Entity("ProductImage", b =>
+                {
+                    b.HasOne("GameZone.Models.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("GameZone.Models.Brand", b =>
                 {
                     b.Navigation("Products");
@@ -612,6 +719,8 @@ namespace GameZone.Migrations
             modelBuilder.Entity("GameZone.Models.Product", b =>
                 {
                     b.Navigation("Game");
+
+                    b.Navigation("Images");
 
                     b.Navigation("Reviews");
                 });

@@ -74,7 +74,14 @@ namespace GameZone.Data
             modelBuilder.Entity<WishlistItem>()
                 .HasIndex(wi => new { wi.WishlistId, wi.ProductId })
                 .IsUnique();
+            modelBuilder.Entity<Game>()
+                .HasMany(g => g.Genres)
+                .WithMany(g => g.Games);
+            modelBuilder.Entity<Review>()
+                .HasIndex(r => new { r.UserId, r.ProductId })
+                .IsUnique();
         }
+
 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
@@ -88,5 +95,6 @@ namespace GameZone.Data
         public DbSet<CartItem> CartItems { get; set; } = null!;
         public DbSet<Wishlist> Wishlists { get; set; } = null!;
         public DbSet<WishlistItem> WishlistItems { get; set; } = null!;
+        public DbSet<Genre> Genres { get; set; } = null!;
     }
 }

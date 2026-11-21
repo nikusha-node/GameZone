@@ -14,5 +14,8 @@ namespace GameZone.Models
         public Category Category { get; set; }
         public List<Review> Reviews { get; set; } = new List<Review>();
         public Game? Game { get; set; }
+        public ICollection<ProductImage> Images { get; set; }= new List<ProductImage>();
+        public decimal? OriginalPrice { get; set; }
+        public bool IsOnSale { get; set; }
     }
 }

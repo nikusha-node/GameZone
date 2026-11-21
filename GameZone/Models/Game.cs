@@ -1,4 +1,6 @@
-﻿namespace GameZone.Models
+﻿using GameZone.Enums;
+
+namespace GameZone.Models
 {
     public class Game : BaseEntity
     {
@@ -10,5 +12,7 @@
         public List<Platform> Platforms { get; set; } = new List<Platform>();
         public int ProductId { get; set; }
         public Product Product { get; set; } = null!;
+        public List<Genre> Genres { get; set; } = new List<Genre>();
+        public AgeRating AgeRating { get; set; }
     }
 }

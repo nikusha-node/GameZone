@@ -1,6 +1,6 @@
-﻿
+﻿using GameZone.DependencyInjection.Interfaces;
 using GameZone.DTOs.Game;
-using GameZone.DependencyInjection.Interfaces;
+using GameZone.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +19,32 @@ namespace GameZone.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await _gameService.GetAll());
+        public async Task<IActionResult> GetAll(
+             [FromQuery] string? search,
+             [FromQuery] string? platform,
+             [FromQuery] string? genre,
+             [FromQuery] decimal? minPrice,
+             [FromQuery] decimal? maxPrice,
+             [FromQuery] bool? onSale,
+             [FromQuery] AgeRating? ageRating,
+             [FromQuery] string? sortBy,
+             [FromQuery] int page = 1,
+             [FromQuery] int pageSize = 8)
+            {
+            var games = await _gameService.GetAll(
+                search,
+                platform,
+                genre,
+                minPrice,
+                maxPrice,
+                onSale,
+                ageRating,
+                sortBy,
+                page,
+                pageSize
+            );
+
+            return Ok(games);
         }
 
         [HttpGet("{id}")]

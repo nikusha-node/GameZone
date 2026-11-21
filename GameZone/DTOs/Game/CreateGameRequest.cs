@@ -1,4 +1,6 @@
-﻿namespace GameZone.DTOs.Game
+﻿using GameZone.Enums;
+
+namespace GameZone.DTOs.Game
 {
     public class CreateGameRequest
     {
@@ -7,7 +9,9 @@
         public DateTime ReleaseDate { get; set; }
         public required string Developer { get; set; }
         public required string Publisher { get; set; }
-        public List<int> PlatformIds { get; set; } = new List<int>();
+        public List<int> PlatformIds { get; set; } = new();
+        public List<int> GenreIds { get; set; } = new();
+        public AgeRating AgeRating { get; set; }
         public int ProductId { get; set; }
     }
 }
