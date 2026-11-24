@@ -37,6 +37,9 @@ namespace GameZone.DependencyInjection.Services
             if (product == null)
                 throw new NotFoundException("Product not found.");
 
+            if (product.StockQuantity <= 0)
+                throw new BadRequestException("Product is out of stock.");
+
             var cart = await GetOrCreateCart(userId);
 
             var existingItem = cart.Items

@@ -48,16 +48,6 @@ namespace GameZone.Controllers
             );
         }
 
-        [HttpPut("update-genre{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update(
-            int id,
-            UpdateGenreRequest request)
-        {
-            await _genreService.Update(id, request);
-            return NoContent();
-        }
-
         [HttpDelete("delete-genre{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
