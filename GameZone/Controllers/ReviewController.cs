@@ -36,7 +36,7 @@ namespace GameZone.Controllers
             return Ok(reviews);
         }
 
-        [HttpPost]
+        [HttpPost("add-new-review")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Create(CreateReviewRequest request)
         {
@@ -52,7 +52,7 @@ namespace GameZone.Controllers
             return Ok(reviews);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update-review{id}")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Update(
             int id, UpdateReviewRequest request)

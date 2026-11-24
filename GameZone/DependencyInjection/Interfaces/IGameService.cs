@@ -9,8 +9,8 @@ namespace GameZone.DependencyInjection.Interfaces
         Task<GameResponse> Create(CreateGameRequest request);
         Task<PaginationResponse<GameResponse>> GetAll(
             string? search,
-            string? platform,
-            string? genre,
+            List<string>? platforms,
+            List<string>? genres,
             decimal? minPrice,
             decimal? maxPrice,
             bool? onSale,

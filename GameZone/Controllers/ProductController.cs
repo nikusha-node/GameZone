@@ -16,7 +16,7 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
-    [HttpGet]
+    [HttpGet("getall")]
     public async Task<IActionResult> GetAll()
     {
         var products = await _productService.GetAll();
@@ -40,7 +40,7 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("get-by{id}")]
     public async Task<IActionResult> GetById(int id)
     {
         var product = await _productService.GetById(id);
@@ -51,7 +51,7 @@ public class ProductController : ControllerBase
         return Ok(product);
     }
 
-    [HttpPost]
+    [HttpPost("add-new-product")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create(CreateProductRequest request)
     {
@@ -63,7 +63,7 @@ public class ProductController : ControllerBase
             product);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("update-product{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(
         int id,
@@ -77,7 +77,7 @@ public class ProductController : ControllerBase
         return Ok("Product updated successfully.");
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete-product{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {

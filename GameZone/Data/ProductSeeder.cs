@@ -343,7 +343,7 @@ namespace GameZone.Data
                 (
                     Name: "Grand Theft Auto V",
                     Description: "Explore Los Santos in this open-world action adventure.",
-                    ImageUrl: "/images/games/gta-v.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/14/71rmY66nqoL._SL1361_.jpg.png",
                     Price: 89.99m,
                     OriginalPrice: (decimal?)129.99m,
                     Developer: "Rockstar North",
@@ -356,7 +356,7 @@ namespace GameZone.Data
                 (
                     Name: "Forza Horizon 5",
                     Description: "Experience an open-world racing adventure in Mexico.",
-                    ImageUrl: "/images/games/forza-horizon-5.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/10/71LSwnEXpXL._SL1500_.jpg.png",
                     Price: 119.99m,
                     OriginalPrice: (decimal?)null,
                     Developer: "Playground Games",
@@ -369,7 +369,7 @@ namespace GameZone.Data
                 (
                     Name: "Resident Evil 4",
                     Description: "Survive a terrifying horror adventure.",
-                    ImageUrl: "/images/games/resident-evil-4.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/15/resident-evil-4-PS5_q4qn-fv.jpg.png",
                     Price: 149.99m,
                     OriginalPrice: (decimal?)179.99m,
                     Developer: "Capcom",
@@ -382,7 +382,7 @@ namespace GameZone.Data
                 (
                     Name: "Minecraft",
                     Description: "Build, explore and survive in an endless block world.",
-                    ImageUrl: "/images/games/minecraft.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/26/PS5_Minecraft.jpg.png",
                     Price: 69.99m,
                     OriginalPrice: (decimal?)null,
                     Developer: "Mojang Studios",
@@ -395,7 +395,7 @@ namespace GameZone.Data
                 (
                     Name: "Cyberpunk 2077",
                     Description: "Explore Night City in a futuristic open-world RPG.",
-                    ImageUrl: "/images/games/cyberpunk-2077.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/20/Untitled-1_npka-gh.jpg.png",
                     Price: 129.99m,
                     OriginalPrice: (decimal?)null,
                     Developer: "CD Projekt Red",
@@ -408,7 +408,7 @@ namespace GameZone.Data
                 (
                     Name: "EA Sports FC 26",
                     Description: "Experience modern football with your favourite teams.",
-                    ImageUrl: "/images/games/ea-sports-fc-26.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/26/fc-26-tbilisi-georgia.jpg.png",
                     Price: 169.99m,
                     OriginalPrice: (decimal?)null,
                     Developer: "EA Sports",
@@ -421,7 +421,7 @@ namespace GameZone.Data
                 (
                     Name: "Red Dead Redemption 2",
                     Description: "Experience an epic western open-world adventure.",
-                    ImageUrl: "/images/games/red-dead-redemption-2.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/19/PS4-RED-DEAD-REDEMPTION-2.jpg.png",
                     Price: 99.99m,
                     OriginalPrice: (decimal?)149.99m,
                     Developer: "Rockstar Studios",
@@ -434,7 +434,7 @@ namespace GameZone.Data
                 (
                     Name: "The Witcher 3: Wild Hunt",
                     Description: "Become a monster hunter in a fantasy open world.",
-                    ImageUrl: "/images/games/the-witcher-3-wild-hunt.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/14/45gg.jpg.png",
                     Price: 79.99m,
                     OriginalPrice: (decimal?)null,
                     Developer: "CD Projekt Red",
@@ -447,7 +447,7 @@ namespace GameZone.Data
                 (
                     Name: "God of War Ragnarök",
                     Description: "Join Kratos and Atreus on an epic Norse adventure.",
-                    ImageUrl: "/images/games/god-of-war-ragnarok.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/14/817y77i7EFL._SL1500__uz7j-gh.jpg.png",
                     Price: 159.99m,
                     OriginalPrice: (decimal?)null,
                     Developer: "Santa Monica Studio",
@@ -460,7 +460,7 @@ namespace GameZone.Data
                 (
                     Name: "Mario Kart 8 Deluxe",
                     Description: "Race against friends and characters from the Mario universe.",
-                    ImageUrl: "/images/games/mario-kart-8-deluxe.jpg",
+                    ImageUrl: "https://gamezone.ge/images/thumbnails/570/570/detailed/21/6950.jpg.png",
                     Price: 139.99m,
                     OriginalPrice: (decimal?)null,
                     Developer: "Nintendo",

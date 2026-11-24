@@ -16,14 +16,14 @@ namespace GameZone.Controllers
             _genreService = genreService;
         }
 
-        [HttpGet]
+        [HttpGet("getall")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _genreService.GetAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get-by{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
@@ -35,7 +35,7 @@ namespace GameZone.Controllers
             return Ok(genre);
         }
 
-        [HttpPost]
+        [HttpPost("create-genre")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateGenreRequest request)
         {
@@ -48,7 +48,7 @@ namespace GameZone.Controllers
             );
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update-genre{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(
             int id,
@@ -58,7 +58,7 @@ namespace GameZone.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete-genre{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {

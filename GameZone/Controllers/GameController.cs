@@ -17,12 +17,12 @@ namespace GameZone.Controllers
             _gameService = gameService;
         }
 
-        [HttpGet]
+        [HttpGet("getall")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAll(
              [FromQuery] string? search,
-             [FromQuery] string? platform,
-             [FromQuery] string? genre,
+             [FromQuery] List<string>? platforms,
+             [FromQuery] List<string>? genres,
              [FromQuery] decimal? minPrice,
              [FromQuery] decimal? maxPrice,
              [FromQuery] bool? onSale,
@@ -33,8 +33,8 @@ namespace GameZone.Controllers
             {
             var games = await _gameService.GetAll(
                 search,
-                platform,
-                genre,
+                platforms,
+                genres,
                 minPrice,
                 maxPrice,
                 onSale,
@@ -43,11 +43,10 @@ namespace GameZone.Controllers
                 page,
                 pageSize
             );
-
             return Ok(games);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get-by{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
@@ -59,7 +58,7 @@ namespace GameZone.Controllers
             return Ok(game);
         }
 
-        [HttpPost]
+        [HttpPost("add-new-game")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateGameRequest request)
         {
@@ -72,7 +71,7 @@ namespace GameZone.Controllers
             );
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update-game{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(
             int id,
@@ -82,7 +81,7 @@ namespace GameZone.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete-game{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {

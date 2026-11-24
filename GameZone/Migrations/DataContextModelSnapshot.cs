@@ -440,61 +440,6 @@ namespace GameZone.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("GameZone.Models.Wishlist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Wishlists");
-                });
-
-            modelBuilder.Entity("GameZone.Models.WishlistItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("WishlistId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("WishlistId", "ProductId")
-                        .IsUnique();
-
-                    b.ToTable("WishlistItems");
-                });
-
             modelBuilder.Entity("ProductImage", b =>
                 {
                     b.Property<int>("Id")
@@ -660,36 +605,6 @@ namespace GameZone.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("GameZone.Models.Wishlist", b =>
-                {
-                    b.HasOne("GameZone.Models.User", "User")
-                        .WithOne("Wishlist")
-                        .HasForeignKey("GameZone.Models.Wishlist", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("GameZone.Models.WishlistItem", b =>
-                {
-                    b.HasOne("GameZone.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GameZone.Models.Wishlist", "Wishlist")
-                        .WithMany("Items")
-                        .HasForeignKey("WishlistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Wishlist");
-                });
-
             modelBuilder.Entity("ProductImage", b =>
                 {
                     b.HasOne("GameZone.Models.Product", "Product")
@@ -732,13 +647,6 @@ namespace GameZone.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("Wishlist");
-                });
-
-            modelBuilder.Entity("GameZone.Models.Wishlist", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

@@ -63,18 +63,7 @@ namespace GameZone.Data
                 .ToTable(t => t.HasCheckConstraint(
                 "CK_Review_Rating",
                 "[Rating] >= 1 AND [Rating] <= 5"));
-            modelBuilder.Entity<Wishlist>()
-                .HasMany(w => w.Items)
-                .WithOne(wi => wi.Wishlist)
-                .HasForeignKey(wi => wi.WishlistId);
-            modelBuilder.Entity<WishlistItem>()
-                .HasOne(wi => wi.Product)
-                .WithMany()
-                .HasForeignKey(wi => wi.ProductId);
-            modelBuilder.Entity<WishlistItem>()
-                .HasIndex(wi => new { wi.WishlistId, wi.ProductId })
-                .IsUnique();
-            modelBuilder.Entity<Game>()
+                modelBuilder.Entity<Game>()
                 .HasMany(g => g.Genres)
                 .WithMany(g => g.Games);
             modelBuilder.Entity<Review>()
@@ -93,8 +82,6 @@ namespace GameZone.Data
         public DbSet<Game> Games { get; set; } = null!;
         public DbSet<Cart> Carts { get; set; } = null!;
         public DbSet<CartItem> CartItems { get; set; } = null!;
-        public DbSet<Wishlist> Wishlists { get; set; } = null!;
-        public DbSet<WishlistItem> WishlistItems { get; set; } = null!;
         public DbSet<Genre> Genres { get; set; } = null!;
     }
 }

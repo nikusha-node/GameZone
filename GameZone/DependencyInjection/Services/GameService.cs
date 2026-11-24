@@ -21,10 +21,10 @@ namespace GameZone.DependencyInjection.Services
 
         public async Task<GameResponse> Create(CreateGameRequest request)
         {
-            var productExists = await _context.Products
-                .AnyAsync(p => p.Id == request.ProductId);
+            var product = await _context.Products
+                .FirstOrDefaultAsync(p => p.Id == request.ProductId);
 
-            if (!productExists)
+            if (product == null)
                 throw new NotFoundException("Product not found.");
 
             var gameAlreadyExists = await _context.Games
@@ -58,7 +58,8 @@ namespace GameZone.DependencyInjection.Services
                 ProductId = request.ProductId,
                 Platforms = platforms,
                 Genres = genres,
-                AgeRating = request.AgeRating
+                AgeRating = request.AgeRating,
+                Product = product,
             };
 
             _context.Games.Add(game);
@@ -71,8 +72,8 @@ namespace GameZone.DependencyInjection.Services
 
         public async Task<PaginationResponse<GameResponse>> GetAll(
             string? search,
-            string? platform,
-            string? genre,
+            List<string>? platforms,
+            List<string>? genres,   
             decimal? minPrice,
             decimal? maxPrice,
             bool? onSale,
@@ -93,13 +94,13 @@ namespace GameZone.DependencyInjection.Services
             if (!string.IsNullOrWhiteSpace(search))
                 query = query.Where(g => g.Name.Contains(search));
 
-            if (!string.IsNullOrWhiteSpace(platform))
+            if (platforms != null && platforms.Count > 0)
                 query = query.Where(g =>
-                    g.Platforms.Any(p => p.Name == platform));
+                    g.Platforms.Any(p => platforms.Contains(p.Name)));
 
-            if (!string.IsNullOrWhiteSpace(genre))
+            if (genres != null && genres.Count > 0)
                 query = query.Where(g =>
-                    g.Genres.Any(gen => gen.Name == genre));
+                    g.Genres.Any(gen => genres.Contains(gen.Name)));
 
             if (minPrice.HasValue)
                 query = query.Where(g => g.Product.Price >= minPrice.Value);
@@ -146,6 +147,7 @@ namespace GameZone.DependencyInjection.Services
             var game = await _context.Games
                 .Include(g => g.Platforms)
                 .Include(g => g.Genres)
+                .Include(g => g.Product)
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             return game == null ? null : MapToResponse(game);
@@ -204,7 +206,7 @@ namespace GameZone.DependencyInjection.Services
             return true;
         }
 
-        private static GameResponse MapToResponse(Game game)
+        private GameResponse MapToResponse(Game game)
         {
             return new GameResponse
             {
@@ -218,7 +220,8 @@ namespace GameZone.DependencyInjection.Services
                 Genres = game.Genres.Select(g => g.Name).ToList(),
                 AgeRating = game.AgeRating,
                 ProductId = game.ProductId,
-                CreatedAt = game.CreatedAt
+                CreatedAt = game.CreatedAt,
+                ImageUrl = game.Product?.ImageUrl
             };
         }
     }

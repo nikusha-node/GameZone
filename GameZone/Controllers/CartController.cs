@@ -29,7 +29,7 @@ namespace GameZone.Controllers
             return id;
         }
 
-        [HttpGet]
+        [HttpGet("get-cart-product")]
         public async Task<IActionResult> GetCart()
         {
             var cart = await _cartService.GetCart(GetUserId());
@@ -37,7 +37,7 @@ namespace GameZone.Controllers
             return Ok(cart);
         }
 
-        [HttpPost("items")]
+        [HttpPost("add-to-cart")]
         public async Task<IActionResult> AddToCart(
             AddToCartRequest request)
         {
@@ -47,7 +47,7 @@ namespace GameZone.Controllers
             return Ok(cart);
         }
 
-        [HttpPut("items/{id}")]
+        [HttpPut("update-product/{id}")]
         public async Task<IActionResult> UpdateCartItem(
             int id,
             UpdateCartItemRequest request)
@@ -58,7 +58,7 @@ namespace GameZone.Controllers
             return Ok(cart);
         }
 
-        [HttpDelete("items/{id}")]
+        [HttpDelete("delete-product/{id}")]
         public async Task<IActionResult> RemoveCartItem(int id)
         {
             await _cartService.RemoveCartItem(GetUserId(), id);
@@ -66,7 +66,7 @@ namespace GameZone.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("clear-cart")]
         public async Task<IActionResult> ClearCart()
         {
             await _cartService.ClearCart(GetUserId());

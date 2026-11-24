@@ -39,7 +39,7 @@ namespace GameZone.Controllers
             return Ok(profile);
         }
 
-        [HttpPut("me")]
+        [HttpPut("update-profile")]
         public async Task<IActionResult> UpdateProfile(
             UpdateProfileRequest request)
         {

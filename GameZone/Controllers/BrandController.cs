@@ -16,14 +16,14 @@ namespace GameZone.Controllers
             _brandService = brandService;
         }
 
-        [HttpGet]
+        [HttpGet("getall")]
         public async Task<IActionResult> GetAll()
         {
             var brands = await _brandService.GetAll();
             return Ok(brands);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("getall{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var brand = await _brandService.GetById(id);
@@ -34,7 +34,7 @@ namespace GameZone.Controllers
             return Ok(brand);
         }
 
-        [HttpPost]
+        [HttpPost("create-brand")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateBrandRequest request)
         {
@@ -46,7 +46,7 @@ namespace GameZone.Controllers
                 brand);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(
             int id,
@@ -60,7 +60,7 @@ namespace GameZone.Controllers
             return Ok("Brand updated successfully.");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
